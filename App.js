@@ -4,9 +4,11 @@ import { createStackNavigator, createBottomTabNavigator, createAppContainer } fr
 
 import SelectUserScreen from './screens/SelectUserScreen'
 import AdminTestListScreen from './screens/AdminTestListScreen'
+import UserTestListScreen from './screens/UserTestListScreen'
 
 import CreateNewTestScreen from './screens/CreateNewTestScreen'
 import TestInfoScreen from './screens/TestInfoScreen'
+import StatisticScreen from './screens/StatisticScreen'
 
 const styles = StyleSheet.create({
 	tab_text: 
@@ -16,6 +18,56 @@ const styles = StyleSheet.create({
 	},
 })
 
+//user tab
+const userTestListNavigator = createStackNavigator(
+{
+	'UserTabs': UserTestListScreen,
+	'test_info_screen': TestInfoScreen,
+	'edit_test_screen': CreateNewTestScreen, //for editing existing tests, tabs are hidden when navigating from this page
+},
+{
+	initialRouteName: 'UserTabs'
+});
+
+const userTabNavigator = createBottomTabNavigator(
+{
+	'Test List': 
+	{
+		screen: userTestListNavigator, //Tests that hold all created tests
+		navigationOptions:
+		{
+			tabBarLabel: (<View style={{alignItems:'center', justifyContent:'center', paddingBottom: 12}}>
+							<Text style={styles.tab_text}>Test List</Text></View>),
+
+		}
+	},
+	'View Statistics': 
+	{
+		screen: StatisticScreen,  //for initially creating tests, tabs are visible
+		navigationOptions:
+		{
+			tabBarLabel: (<View style={{alignItems:'center', justifyContent:'center', paddingBottom: 12}}>
+							<Text style={styles.tab_text}>View Statistics</Text></View>)
+		},
+
+
+	}
+	
+},
+{
+	initialRouteName: 'Test List',
+	tabBarOptions: 
+	{
+		activeBackgroundColor:'#b9b9a4',
+		//tabStyle:
+		//{
+		//	backgroundColor: 'black'
+		//}
+		
+	}
+
+});
+//end user tab
 
 const testListNavigator = createStackNavigator(
 {
@@ -77,7 +129,7 @@ const selectUserStackNavigator = createStackNavigator(
 {
 	'Home': SelectUserScreen,
 	'AdminTabs':adminTabNavigator,
-	//'UserTabs':userTabNavigator
+	'UserTabs':userTabNavigator
 	
 },
 {
